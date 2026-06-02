@@ -1,0 +1,17 @@
+{
+  "name": "kuromoji-cdn-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/copy-dict.cjs && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "kuromoji": "^0.1.2"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}
