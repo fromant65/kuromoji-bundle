@@ -3,16 +3,30 @@ import kuromoji from "kuromoji";
 const dictBaseUrl = new URL("./dict/", import.meta.url).href;
 
 let tokenizer = null;
+let buildInProgress = null;
 
 async function getTokenizer() {
   if (tokenizer) return tokenizer;
-  return new Promise((resolve, reject) => {
+  if (buildInProgress) return buildInProgress;
+
+  buildInProgress = new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      buildInProgress = null;
+      reject(new Error("Tokenizer build timed out (15s)"));
+    }, 15000);
+
     kuromoji.builder({ dicPath: dictBaseUrl }).build((err, tk) => {
-      if (err) return reject(err);
+      clearTimeout(timer);
+      if (err) {
+        buildInProgress = null;
+        return reject(err);
+      }
       tokenizer = tk;
       resolve(tokenizer);
     });
   });
+
+  return buildInProgress;
 }
 
 export async function tokenize(text) {
