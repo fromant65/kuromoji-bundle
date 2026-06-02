@@ -1,9 +1,12 @@
 export function join(...parts) {
-  return parts
-    .flat()
-    .filter((p) => p != null && p !== "")
-    .join("/")
-    .replace(/\/+/g, "/");
+  const segments = parts.flat().filter((p) => p != null && p !== "");
+  if (segments.length === 0) return ".";
+  const joined = segments.join("/");
+  const protocol = joined.match(/^([a-zA-Z][a-zA-Z0-9+.-]*:\/\/)/);
+  if (protocol) {
+    return protocol[1] + joined.slice(protocol[1].length).replace(/\/+/g, "/");
+  }
+  return joined.replace(/\/+/g, "/");
 }
 
 export function resolve(...parts) {
