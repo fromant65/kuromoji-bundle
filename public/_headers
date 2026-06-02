@@ -1,0 +1,5 @@
+/kuromoji.bundle.js
+  Access-Control-Allow-Origin: *
+
+/dict/*
+  Access-Control-Allow-Origin: *

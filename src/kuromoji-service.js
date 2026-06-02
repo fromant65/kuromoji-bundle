@@ -1,11 +1,13 @@
 import kuromoji from "kuromoji";
 
+const dictBaseUrl = new URL("./dict/", import.meta.url).href;
+
 let tokenizer = null;
 
 async function getTokenizer() {
   if (tokenizer) return tokenizer;
   return new Promise((resolve, reject) => {
-    kuromoji.builder({ dicPath: "./dict" }).build((err, tk) => {
+    kuromoji.builder({ dicPath: dictBaseUrl }).build((err, tk) => {
       if (err) return reject(err);
       tokenizer = tk;
       resolve(tokenizer);
